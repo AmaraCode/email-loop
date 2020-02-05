@@ -11,6 +11,8 @@ namespace EmailLoop
             try
             {
 
+                //note that you will need to edit the smtpserver.json and the engine.json files for your info
+
 #if DEBUG
                 command = "blast";
                 server = "Google";
