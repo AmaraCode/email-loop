@@ -5,7 +5,7 @@ namespace EmailLoop
 {
 
     /// <summary>
-    /// 
+    /// Static class to hole random stuff since this is a small app
     /// </summary>
     public static class Statics
     {
@@ -18,7 +18,7 @@ namespace EmailLoop
 
 
         /// <summary>
-        /// 
+        /// static constructor
         /// </summary>
         static Statics()
         {
@@ -28,7 +28,7 @@ namespace EmailLoop
 
 
         /// <summary>
-        /// 
+        /// A single display method for writing to console
         /// </summary>
         /// <param name="info"></param>
         /// <param name="showDate"></param>
@@ -42,7 +42,6 @@ namespace EmailLoop
             {
                 System.Console.WriteLine($"{info}");
             }
-
         }
     }
 

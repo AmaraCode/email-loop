@@ -10,11 +10,13 @@ namespace EmailLoop
 {
 
     /// <summary>
-    /// 
+    /// Basic IO class used to Load and Save collections to a json file
+    /// Note that the TModel type is ONLY used to name the json file so if TModel
+    /// is of type Company then the file will be assumed Company.json
     /// </summary>
     /// <typeparam name="TCollection"></typeparam>
     /// <typeparam name="TModel"></typeparam>
-    public class FileIO<TCollection, TModel> //where TCollection: IList<TModel>
+    public class FileIO<TCollection, TModel>
     {
 
         private string _file;
@@ -23,7 +25,7 @@ namespace EmailLoop
 
 
         /// <summary>
-        /// 
+        /// The path is required to find the .json file
         /// </summary>
         /// <param name="dataPath"></param>
         public FileIO(string dataPath)
@@ -35,7 +37,7 @@ namespace EmailLoop
 
 
         /// <summary>
-        /// 
+        /// Saves the Collection to a .json file.
         /// </summary>
         /// <param name="collection"></param>
         /// <returns></returns>
@@ -62,7 +64,6 @@ namespace EmailLoop
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
             return status;
@@ -71,25 +72,23 @@ namespace EmailLoop
 
 
         /// <summary>
-        /// 
+        /// Reads .json file and returns populated collection
         /// </summary>
-        /// <param name="collection"></param>
         /// <returns></returns>
-        public TCollection GetData(TCollection collection)
+        public TCollection GetData()
         {
+            TCollection collection;
+
             try
             {
-                if (collection != null)
-                {
-                    //serialize the collection to JSON
-                    string filename = @$"{_path}\{_file}.json";
+                //serialize the collection to JSON
+                string filename = @$"{_path}\{_file}.json";
 
-                    using (StreamReader file = new StreamReader(filename))
-                    {
-                        JsonSerializer serializer = new JsonSerializer();
-                        //collection = serializer.Deserialize<TCollection>()
-                        collection = (TCollection)serializer.Deserialize(file, typeof(TCollection));
-                    }
+                using (StreamReader file = new StreamReader(filename))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    //collection = serializer.Deserialize<TCollection>()
+                    collection = (TCollection)serializer.Deserialize(file, typeof(TCollection));
                 }
             }
             catch (Exception ex)

@@ -38,13 +38,7 @@ namespace EmailLoop
         /// <returns></returns>
         public override string ToString()
         {
-            return @$"Command: {Command}
-                      Intervals: {Interval}
-                      Delay: {Delay}
-                      Server: {Server}
-                      EmailAddress: {EmailAddress}
-                      Subject: {Subject}
-                      Message: {Message}";
+            return $" Command: {Command} \n Intervals: {Interval} \n Delay: {Delay} \n Server: {Server} \n EmailAddress: {EmailAddress} \n Subject: {Subject} \n Message: {Message}";
         }
 
     }

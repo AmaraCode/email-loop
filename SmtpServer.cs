@@ -4,7 +4,7 @@ namespace EmailLoop
 {
 
     /// <summary>
-    /// 
+    /// poco
     /// </summary>
     public class SmtpServer
     {

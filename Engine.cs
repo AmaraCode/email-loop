@@ -7,12 +7,13 @@ namespace EmailLoop
 {
 
     /// <summary>
-    /// 
+    /// This little engine class does most of the logic work.
+    /// In a real project we'd be using interfaces
     /// </summary>
     public class Engine
     {
 
-        private EmailSender _sender;
+        private EmailSender _sender;  //the class that sends the email
         private FileIO<List<string>, Engine> _file;
         private FileIO<Dictionary<string, SmtpServer>, SmtpServer> _servers;
         private CliConfig _cli;
@@ -100,49 +101,32 @@ namespace EmailLoop
 
 
         /// <summary>
-        /// 
+        /// Load up the two needed collections
         /// </summary>
         private void LoadData()
         {
-            Statics.Emails = _file.GetData(Statics.Emails);
-            Statics.Servers = _servers.GetData(Statics.Servers);
-
-            /*
-            //seed data
-            if (Statics.Servers != null)
-            {
-                SmtpServer x1 = new SmtpServer
-                {
-                    Host = "smtp.soho.com",
-                    Port = 465,
-                    UserName = "amaracodellc@gmail.com",
-                    Secret = "#b.QU5Ca:nb{mL]Q"
-                };
-
-                Statics.Servers.Add("AmaraCode", x1);
-                var x = _servers.SaveData(Statics.Servers);
-
-            }*/
-
-            //Statics.Display($"Emails loaded.  Count: {Statics.Emails.Count}");
+            Statics.Emails = _file.GetData();
+            Statics.Servers = _servers.GetData();
         }
 
 
 
         /// <summary>
-        /// 
+        /// This is the command to actuatlly send emails
         /// </summary>
         public void Blast()
         {
             SmtpServer server;
 
+
+            //Ensure we have the server config in the collection 
             if (Statics.Servers.ContainsKey(_cli.Server))
             {
                 server = Statics.Servers[_cli.Server];
             }
             else
             {
-                Statics.Display("Cannot locate server.. check config");
+                Statics.Display("Cannot locate server.. check SmtpServer.json");
                 return;
             }
 
@@ -172,13 +156,12 @@ namespace EmailLoop
 
 
         /// <summary>
-        /// 
+        /// Simple factory method for convienence
         /// </summary>
         /// <param name="cliConfig"></param>
         /// <returns></returns>
         public static Engine CreateNew(CliConfig cliConfig)
         {
-
             return new Engine(cliConfig);
         }
 
@@ -186,7 +169,7 @@ namespace EmailLoop
 
 
         /// <summary>
-        /// 
+        /// The method that will actually call the method in the sender class
         /// </summary>
         /// <param name="server"></param>
         /// <param name="emailAddress"></param>
@@ -200,7 +183,7 @@ namespace EmailLoop
 
 
         /// <summary>
-        /// 
+        /// Simple method that displays the emails in our blast list
         /// </summary>
         public void DisplayList()
         {
