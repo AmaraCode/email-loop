@@ -3,8 +3,10 @@ using System;
 
 namespace EmailLoop
 {
-    interface ICommand
+    public interface IMenu
+
     {
         void Invoke();
+        void ShowMenu(bool padded);
     }
 }

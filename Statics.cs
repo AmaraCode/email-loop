@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AmaraCode;
 
 
+
 namespace EmailLoop
 {
 
@@ -27,6 +28,7 @@ namespace EmailLoop
             Emails = new List<string>();
             Servers = new Dictionary<string, SmtpServer>();
         }
+
 
 
         /// <summary>
@@ -63,65 +65,35 @@ namespace EmailLoop
         }
 
 
+
+
         /// <summary>
         /// 
         /// </summary>
-        public static void ShowMainMenu()
+        public static void PersistEmail()
         {
-            //Console.Clear();
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Welcome to the email blast app.");
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("********************************");
-
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("1. ");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("Send Blast \n");
-
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("2. ");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write($"List Emails ({Statics.Emails.Count}) \n");
-
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("3. ");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("Add Email Address \n");
-
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("4. ");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("Remove Email Address \n");
-
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("5. ");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("SMTP Server Menu \n");
-
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("Type");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write(" exit");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(" to quit application. \n");
-
-
-
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("********************************");
+            var path = Environment.CurrentDirectory;
+            var fileio = new AmaraCode.FileIO();
+            string file = path + "\\emails.json";
+            System.Console.WriteLine(file);
+            //persist the email list
+            fileio.SaveCollection<List<string>>(Statics.Emails, file);
         }
 
 
 
-        public static void PersistData()
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void PersistSMTPServer()
         {
-
-            //TODO implement methods
-
+            var path = Environment.CurrentDirectory.ToString();
+            var fileio = new AmaraCode.FileIO();
+            string file = path + "\\smtpserver.json";
+            //persist the email list
+            fileio.SaveCollection<Dictionary<string, SmtpServer>>(Statics.Servers, file);
         }
+
 
     }
 }

@@ -29,68 +29,6 @@ namespace EmailLoop
 
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="email"></param>
-        public void AddEmail(string email)
-        {
-            if (email != "")
-            {
-                if (!Statics.Emails.Contains(email))
-                {
-                    Statics.Emails.Add(email);
-                    Statics.PersistData();
-                    Statics.Display($"Email Added: {email}");
-                    Statics.Display($"New Emails Count: {Statics.Emails.Count}");
-                }
-                else
-                {
-                    Statics.Display($"Email already exists.");
-
-                }
-
-            }
-        }
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="email"></param>
-        public void RemoveEmail(string email)
-        {
-            if (email != "")
-            {
-                Statics.Emails.Remove(email);
-                Statics.PersistData();
-                Statics.Display($"Email Removed: {email}");
-                Statics.Display($"New Emails Count: {Statics.Emails.Count}");
-
-            }
-        }
-
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Clear()
-        {
-            Statics.Emails.Clear();
-            Statics.PersistData();
-            Statics.Display("All emails deleted.");
-            Statics.Display($"New Emails Count: {Statics.Emails.Count}");
-        }
-
-
-
-
-
-
-
-        /// <summary>
         /// This is the command to actuatlly send emails
         /// </summary>
         public void Blast()
@@ -134,11 +72,6 @@ namespace EmailLoop
 
 
 
-        /// <summary>
-        /// Simple factory method for convienence
-        /// </summary>
-        /// <param name="cliConfig"></param>
-        /// <returns></returns>
         public static Engine CreateNew()
         {
             return new Engine();
@@ -161,16 +94,6 @@ namespace EmailLoop
         }
 
 
-        /// <summary>
-        /// Simple method that displays the emails in our blast list
-        /// </summary>
-        public void DisplayList()
-        {
-            foreach (string email in Statics.Emails)
-            {
-                System.Console.WriteLine(email);
-            }
-        }
 
     }
 

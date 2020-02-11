@@ -1,6 +1,6 @@
 ﻿using System;
 //using System.CommandLine.DragonFruit;
-using EmailLoop.Commands;
+using EmailLoop.Menus;
 using AmaraCode;
 using System.Collections.Generic;
 
@@ -20,46 +20,10 @@ namespace EmailLoop
             try
             {
 
-                bool exit = false;
+                Console.Clear();
                 LoadData();
-
-                Statics.ShowMainMenu();
-                while (!exit)
-                {
-
-                    var result = Statics.GetUserInput("Enter Command: ", ConsoleColor.Blue, ConsoleColor.Green);
-                    switch (result)
-                    {
-
-                        case "clear":
-                            Console.Clear();
-                            //Statics.ShowMainMenu();
-                            break;
-
-                        case "":
-                            Statics.ShowMainMenu();
-                            break;
-
-                        case "2":
-                            var eng = Engine.CreateNew();
-                            eng.DisplayList();
-                            break;
-
-                        case "exit":
-                            //reset the console color
-                            Console.ForegroundColor = ConsoleColor.White;
-                            return;
-                        case "5":
-                            var item = new SmtpServerCommand();
-                            item.Invoke();
-                            break;
-                        default:
-                            System.Console.WriteLine("Invalid Option.");
-                            Statics.ShowMainMenu();
-                            break;
-                    }
-                }
-
+                var main = MainMenu.CreateNew();
+                main.Invoke();
 
 
                 /*
