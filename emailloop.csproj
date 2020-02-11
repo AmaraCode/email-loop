@@ -1,17 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <AssemblyName>el</AssemblyName>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>EmailLoop</RootNamespace>
-    
   </PropertyGroup>
 
   
 
   <ItemGroup>
+    
+        
+    <ProjectReference Include = "c:\amaracode\projects\src\amaracode\amaracode.csproj" />
+    
+    
      <Content Include="SmtpServer.json" Link="SmtpServer.json" CopyToOutputDirectory="PreserveNewest" />
-     <Content Include="Engine.json" Link="Engine.json" CopyToOutputDirectory="PreserveNewest" />
+     <Content Include="Emails.json" Link="Emails.json" CopyToOutputDirectory="PreserveNewest" />
     <PackageReference Include="MailKit" Version="2.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20071.2" />

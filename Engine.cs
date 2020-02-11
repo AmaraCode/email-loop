@@ -14,8 +14,6 @@ namespace EmailLoop
     {
 
         private EmailSender _sender;  //the class that sends the email
-        private FileIO<List<string>, Engine> _file;
-        private FileIO<Dictionary<string, SmtpServer>, SmtpServer> _servers;
         private CliConfig _cli;
 
 
@@ -23,13 +21,9 @@ namespace EmailLoop
         /// 
         /// </summary>
         /// <param name="cli"></param>
-        public Engine(CliConfig cli)
+        public Engine()
         {
-            _cli = cli;
-            _file = new FileIO<List<string>, Engine>(AppDomain.CurrentDomain.BaseDirectory);
-            _servers = new FileIO<Dictionary<string, SmtpServer>, SmtpServer>(AppDomain.CurrentDomain.BaseDirectory);
             _sender = new EmailSender();
-            LoadData();
         }
 
 
@@ -45,7 +39,7 @@ namespace EmailLoop
                 if (!Statics.Emails.Contains(email))
                 {
                     Statics.Emails.Add(email);
-                    PersistData();
+                    Statics.PersistData();
                     Statics.Display($"Email Added: {email}");
                     Statics.Display($"New Emails Count: {Statics.Emails.Count}");
                 }
@@ -69,21 +63,13 @@ namespace EmailLoop
             if (email != "")
             {
                 Statics.Emails.Remove(email);
-                PersistData();
+                Statics.PersistData();
                 Statics.Display($"Email Removed: {email}");
                 Statics.Display($"New Emails Count: {Statics.Emails.Count}");
 
             }
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void PersistData()
-        {
-            _file.SaveData(Statics.Emails);
-        }
 
 
 
@@ -93,21 +79,14 @@ namespace EmailLoop
         public void Clear()
         {
             Statics.Emails.Clear();
-            PersistData();
+            Statics.PersistData();
             Statics.Display("All emails deleted.");
             Statics.Display($"New Emails Count: {Statics.Emails.Count}");
         }
 
 
 
-        /// <summary>
-        /// Load up the two needed collections
-        /// </summary>
-        private void LoadData()
-        {
-            Statics.Emails = _file.GetData();
-            Statics.Servers = _servers.GetData();
-        }
+
 
 
 
@@ -160,9 +139,9 @@ namespace EmailLoop
         /// </summary>
         /// <param name="cliConfig"></param>
         /// <returns></returns>
-        public static Engine CreateNew(CliConfig cliConfig)
+        public static Engine CreateNew()
         {
-            return new Engine(cliConfig);
+            return new Engine();
         }
 
 

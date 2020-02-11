@@ -1,12 +1,6 @@
-using System;
 using MimeKit;
-using MailKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
-using System.Collections.Generic;
-
-
-
 
 namespace EmailLoop
 {
