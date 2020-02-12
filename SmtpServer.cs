@@ -16,7 +16,12 @@ namespace EmailLoop
         public string UserName { get; set; }
         public string Secret { get; set; }
 
-#pragma warning restore 1591        
+#pragma warning restore 1591
+
+        public static SmtpServer CreateNew()
+        {
+            return new SmtpServer();
+        }
 
     }
 

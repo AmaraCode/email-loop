@@ -17,12 +17,13 @@ namespace EmailLoop
         private CliConfig _cli;
 
 
+
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="cli"></param>
         public Engine()
         {
+            _cli = new CliConfig(); //added this to shut the compiler up... possibly delete
             _sender = new EmailSender();
         }
 
@@ -71,7 +72,10 @@ namespace EmailLoop
         }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static Engine CreateNew()
         {
             return new Engine();

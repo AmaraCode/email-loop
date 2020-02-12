@@ -32,27 +32,33 @@ namespace EmailLoop
 
 
         /// <summary>
-        /// A single display method for writing to console
+        /// 
         /// </summary>
         /// <param name="info"></param>
-        /// <param name="showDate"></param>
-        public static void Display(string info, bool showDate = false)
+        /// <param name="lineFeed"></param>
+        /// <param name="color"></param>
+        public static void Display(string info, bool lineFeed = false, ConsoleColor color = ConsoleColor.White)
         {
-            if (showDate)
-            {
-                System.Console.WriteLine($"{DateTime.Now} : {info}");
-            }
-            else
+            Console.ForegroundColor = color;
+            if (lineFeed)
             {
                 System.Console.WriteLine($"{info}");
             }
+            else
+            {
+                System.Console.Write($"{info}");
+            }
+
         }
+
 
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="messageToDisplay"></param>
+        /// <param name="messageColor"></param>
+        /// <param name="promptColor"></param>
         /// <returns></returns>
         public static string GetUserInput(string messageToDisplay, ConsoleColor messageColor = ConsoleColor.White, ConsoleColor promptColor = ConsoleColor.White)
         {
@@ -92,6 +98,17 @@ namespace EmailLoop
             string file = path + "\\smtpserver.json";
             //persist the email list
             fileio.SaveCollection<Dictionary<string, SmtpServer>>(Statics.Servers, file);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void PressAnyKey()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
         }
 
 

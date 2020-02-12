@@ -40,7 +40,7 @@ namespace EmailLoop.Menus
 
 
                 var result = Statics.GetUserInput("Enter Command: ", ConsoleColor.Blue, ConsoleColor.Green);
-                switch (result)
+                switch (result.ToLower())
                 {
 
                     case "":
@@ -48,19 +48,19 @@ namespace EmailLoop.Menus
                         ShowMenu();
                         break;
 
-                    case "1":
+                    case "send":
                         System.Console.WriteLine("Coming soon");
                         break;
 
-                    case "2":
-                        DisplayList();
+                    case "list":
+                        ListEmails();
                         break;
 
-                    case "3":
+                    case "add":
                         AddEmail();
                         break;
 
-                    case "4":
+                    case "remove":
                         RemoveEmail();
                         break;
 
@@ -82,7 +82,7 @@ namespace EmailLoop.Menus
                         break;
 
 
-                    case "5":
+                    case "smtp":
                         var item = SmtpServerMenu.CreateNew();
                         item.Invoke();
                         break;
@@ -110,32 +110,32 @@ namespace EmailLoop.Menus
             }
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Welcome to the email blast app.");
+            Console.WriteLine("Main Menu");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("********************************");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("1. ");
+            Console.Write("Send - ");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("Send Blast \n");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("2. ");
+            Console.Write("List - ");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write($"List Emails ({Statics.Emails.Count}) \n");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("3. ");
+            Console.Write("Add - ");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("Add Email Address \n");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("4. ");
+            Console.Write("Remove - ");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("Remove Email Address \n");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("5. ");
+            Console.Write("SMTP - ");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("SMTP Server Menu \n");
 
@@ -158,15 +158,16 @@ namespace EmailLoop.Menus
         /// <summary>
         /// Simple method that displays the emails in our blast list
         /// </summary>
-        public void DisplayList()
+        public void ListEmails()
         {
+            Console.WriteLine("");
             foreach (string email in Statics.Emails)
             {
-                System.Console.WriteLine(email);
+                Statics.Display(email, true, ConsoleColor.White);
             }
-
-            Console.WriteLine("Press any key to continue");
-            Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("");
+            Statics.PressAnyKey();
         }
 
 
@@ -175,31 +176,54 @@ namespace EmailLoop.Menus
         /// </summary>
         public void WipeAllEmails()
         {
-            Statics.Emails.Clear();
-            Statics.PersistEmail();
-            Statics.Display("All emails deleted.");
-            Statics.Display($"New Emails Count: {Statics.Emails.Count}");
+
+            string response = Statics.GetUserInput("Enter yes to confirm: ", ConsoleColor.Red, ConsoleColor.White);
+
+            if (response == "yes")
+            {
+                Statics.Emails.Clear();
+                Statics.PersistEmail();
+                Statics.Display("All emails deleted.", true, ConsoleColor.Red);
+                Statics.Display("New Emails Count: ", false, ConsoleColor.White);
+                Statics.Display($"{Statics.Emails.Count}", true, ConsoleColor.Green);
+                Statics.PressAnyKey();
+            }
+            else
+            {
+                Statics.Display("Wipe Aborted", true, ConsoleColor.Red);
+                Statics.PressAnyKey();
+            }
         }
 
 
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void RemoveEmail()
         {
-            string email = Statics.GetUserInput("Enter EmailAddress: ", ConsoleColor.Blue, ConsoleColor.White);
+            string email = Statics.GetUserInput("Enter Email Address To Remove: ", ConsoleColor.Gray, ConsoleColor.Green);
 
             if (email != "")
             {
                 Statics.Emails.Remove(email);
                 Statics.PersistEmail();
-                Statics.Display($"Email Removed: {email}");
-                Statics.Display($"New Emails Count: {Statics.Emails.Count}");
-
+                Statics.Display($"Email Removed: ", false, ConsoleColor.Gray);
+                Statics.Display($"{email}", true, ConsoleColor.Green);
+                Statics.Display($"New Emails Count: ", false, ConsoleColor.Gray);
+                Statics.Display($"{Statics.Emails.Count}", true, ConsoleColor.Green);
+                Statics.PressAnyKey();
             }
         }
 
 
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void AddEmail()
         {
-            string email = Statics.GetUserInput("Enter EmailAddress: ", ConsoleColor.Blue, ConsoleColor.White);
+            string email = Statics.GetUserInput("Enter New Email Address: ", ConsoleColor.Gray, ConsoleColor.Green);
 
             if (email != "")
             {
@@ -207,13 +231,16 @@ namespace EmailLoop.Menus
                 {
                     Statics.Emails.Add(email);
                     Statics.PersistEmail();
-                    Statics.Display($"Email Added: {email}");
-                    Statics.Display($"New Emails Count: {Statics.Emails.Count}");
+                    Statics.Display($"Email Added: ", false, ConsoleColor.Gray);
+                    Statics.Display($"{email}", true, ConsoleColor.Green);
+                    Statics.Display($"New Emails Count: ", false, ConsoleColor.Gray);
+                    Statics.Display($"{Statics.Emails.Count}", true, ConsoleColor.Green);
+                    Statics.PressAnyKey();
                 }
                 else
                 {
-                    Statics.Display($"Email already exists.");
-
+                    Statics.Display($"Email already exists.", true, ConsoleColor.Red);
+                    Statics.PressAnyKey();
                 }
 
             }

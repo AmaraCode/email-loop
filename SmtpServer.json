@@ -1,14 +1,1 @@
-{
-  "AmaraCode": {
-    "Host": "smtp.zoho.com",
-    "Port": 587,
-    "UserName": "name@host.com",
-    "Secret": "dfewrtetgrb{mL]Q"
-  },
-  "Google": {
-    "Host": "smtp.gmail.com",
-    "Port": 465,
-    "UserName": "name@gmail.com",
-    "Secret": "Yfdtw455tg5M=*m%s"
-  }
-}
+{"Server1":{"Host":"smtp.somewhere.com","Port":465,"UserName":"myemail@somewhere.com","Secret":"c2VjcmV0"}}
