@@ -27,6 +27,7 @@ namespace EmailLoop
         {
             Emails = new List<string>();
             Servers = new Dictionary<string, SmtpServer>();
+            LoadData();
         }
 
 
@@ -119,6 +120,19 @@ namespace EmailLoop
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private static void LoadData()
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            var io = new FileIO();
+
+            Statics.Emails = io.GetCollection<List<string>>(path + "emails.json");
+            Statics.Servers = io.GetCollection<Dictionary<string, SmtpServer>>(path + "servers.json");
+        }
+
+
 
         /// <summary>
         /// 
@@ -142,7 +156,7 @@ namespace EmailLoop
         {
             var path = Environment.CurrentDirectory.ToString();
             var fileio = new AmaraCode.FileIO();
-            string file = path + "\\smtpserver.json";
+            string file = path + "\\servers.json";
             //persist the email list
             fileio.SaveCollection<Dictionary<string, SmtpServer>>(Statics.Servers, file);
         }

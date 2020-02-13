@@ -109,6 +109,8 @@ namespace EmailLoop.Menus
             Statics.Display("Edit Smtp Server", true, ConsoleColor.Gray);
             Statics.Display(new string('-', 40), true, ConsoleColor.Gray);
 
+            ShowServerList();
+
             var serverName = Statics.GetUserInput("Enter Server Name to Edit: ", ConsoleColor.Gray, ConsoleColor.Green);
 
             if (Statics.Servers.ContainsKey(serverName))
@@ -261,6 +263,19 @@ namespace EmailLoop.Menus
         /// </summary>
         public void ListServers()
         {
+            ShowServerList();
+            Console.WriteLine("");
+            Statics.PressAnyKey();
+        }
+
+
+
+        /// <summary>
+        /// This method was made because multiple other methods needed to display the list.
+        /// </summary>
+        private void ShowServerList()
+        {
+
             Console.Clear();
             var sec = new Security();
 
@@ -273,11 +288,11 @@ namespace EmailLoop.Menus
                 Console.WriteLine("{0,-30} {1,-30} {2, -10} {3, -30} {4, -30}", item.Key, item.Value.Host,
                 item.Value.Port.ToString(), item.Value.UserName, sec.DecryptString(item.Value.Secret));
             }
-
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("");
-            Statics.PressAnyKey();
+
+
         }
+
 
         /// <summary>
         /// 

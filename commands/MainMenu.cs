@@ -45,7 +45,7 @@ namespace EmailLoop.Menus
                         break;
 
                     case "send":
-                        System.Console.WriteLine("Coming soon");
+                        SendEmails();
                         break;
 
                     case "list":
@@ -85,7 +85,7 @@ namespace EmailLoop.Menus
 
                     default:
                         System.Console.WriteLine("Invalid Option.");
-                        ShowMenu();
+                        //ShowMenu();
                         break;
                 }
             }
@@ -151,6 +151,15 @@ namespace EmailLoop.Menus
             Console.WriteLine(new string('-', 60));
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SendEmails()
+        {
+            var eng = Engine.CreateNew();
+            eng.SendEmail();
+        }
 
 
         /// <summary>

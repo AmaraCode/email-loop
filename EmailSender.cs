@@ -31,6 +31,7 @@ namespace EmailLoop
 
             var mimeMessage = new MimeMessage();
             var bodyBuilder = new BodyBuilder();
+            AmaraCode.Security sec = new AmaraCode.Security();
 
             // from
             mimeMessage.From.Add(new MailboxAddress("Admin", server.UserName));
@@ -48,7 +49,7 @@ namespace EmailLoop
 
             client.ServerCertificateValidationCallback = (s, c, h, e) => true;
             client.Connect(server.Host, server.Port, SecureSocketOptions.Auto);
-            client.Authenticate(server.UserName, server.Secret);
+            client.Authenticate(server.UserName, sec.DecryptString(server.Secret));
             client.Send(mimeMessage);
             client.Disconnect(true);
         }

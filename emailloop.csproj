@@ -15,7 +15,7 @@
     <ProjectReference Include = "c:\amaracode\projects\src\amaracode\amaracode.csproj" />
     
     
-     <Content Include="SmtpServer.json" Link="SmtpServer.json" CopyToOutputDirectory="PreserveNewest" />
+     <Content Include="servers.json" Link="servers.json" CopyToOutputDirectory="PreserveNewest" />
      <Content Include="emails.json" Link="emails.json" CopyToOutputDirectory="PreserveNewest" />
     <PackageReference Include="MailKit" Version="2.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

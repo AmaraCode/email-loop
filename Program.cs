@@ -21,7 +21,6 @@ namespace EmailLoop
             {
 
                 Console.Clear();
-                LoadData();
                 var main = MainMenu.CreateNew();
                 main.Invoke();
 
@@ -89,16 +88,5 @@ namespace EmailLoop
 
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private static void LoadData()
-        {
-            string path = AppDomain.CurrentDomain.BaseDirectory;
-            var io = new FileIO();
-
-            Statics.Emails = io.GetCollection<List<string>>(path + "emails.json");
-            Statics.Servers = io.GetCollection<Dictionary<string, SmtpServer>>(path + "SmtpServer.json");
-        }
     }
 }
