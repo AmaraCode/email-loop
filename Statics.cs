@@ -54,7 +54,7 @@ namespace EmailLoop
 
 
         /// <summary>
-        /// 
+        /// This method will prompt the user for an input of Type string.
         /// </summary>
         /// <param name="messageToDisplay"></param>
         /// <param name="messageColor"></param>
@@ -62,14 +62,61 @@ namespace EmailLoop
         /// <returns></returns>
         public static string GetUserInput(string messageToDisplay, ConsoleColor messageColor = ConsoleColor.White, ConsoleColor promptColor = ConsoleColor.White)
         {
+
+            return GetUserInput<string>(messageToDisplay, messageColor, promptColor);
+
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="messageToDisplay"></param>
+        /// <param name="messageColor"></param>
+        /// <param name="promptColor"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T GetUserInput<T>(string messageToDisplay, ConsoleColor messageColor = ConsoleColor.White, ConsoleColor promptColor = ConsoleColor.White)
+        {
+            do
+            {
+                Console.ForegroundColor = messageColor;
+                Console.Write(messageToDisplay + " ");
+                Console.ForegroundColor = promptColor;
+
+                var input = Console.ReadLine();
+
+                try
+                {
+                    var result = Convert.ChangeType(input, typeof(T));
+                    return (T)result;
+                }
+                catch
+                {
+                    System.Console.WriteLine("Invalid input");
+                }
+            } while (1 == 1);
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="messageToDisplay"></param>
+        /// <param name="messageColor"></param>
+        /// <param name="promptColor"></param>
+        /// <returns></returns>
+        public static char GetUserSingleInput(string messageToDisplay, ConsoleColor messageColor = ConsoleColor.White, ConsoleColor promptColor = ConsoleColor.White)
+        {
+
             Console.ForegroundColor = messageColor;
             Console.Write(messageToDisplay + " ");
             Console.ForegroundColor = promptColor;
-
-            var result = Console.ReadLine();
-            return result;
+            ConsoleKeyInfo key = Console.ReadKey();
+            Console.WriteLine("");
+            return key.KeyChar;
         }
-
 
 
 
@@ -110,6 +157,7 @@ namespace EmailLoop
             Console.WriteLine("Press any key to continue");
             Console.ReadKey();
         }
+
 
 
     }

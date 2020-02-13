@@ -33,7 +33,7 @@ namespace EmailLoop.Menus
             bool exit = false;
             while (!exit)
             {
-                ShowMenu();
+                ShowMenu(false);
 
                 var result = Statics.GetUserInput("Enter Command: ", ConsoleColor.Blue, ConsoleColor.Green);
                 switch (result.ToLower())
@@ -47,8 +47,12 @@ namespace EmailLoop.Menus
                     case "add":
                         AddServer();
                         break;
+                    case "edit":
+                        EditServer();
+                        break;
                     case "":
                         //ShowMenu();
+                        Console.Clear();
                         break;
 
                     case "main":
@@ -64,17 +68,7 @@ namespace EmailLoop.Menus
                     default:
                         break;
                 }
-
-
             }
-
-            /*
-            var host = Statics.GetUserInput("Enter Host Name: ");
-            var port = Statics.GetUserInput("Enter Port Number:");
-            var userName = Statics.GetUserInput("Enter UserName:");
-            var secret = Statics.GetUserInput("Enter Password");
-            */
-
         }
 
 
@@ -87,27 +81,158 @@ namespace EmailLoop.Menus
             AmaraCode.Security sec = new Security();
             try
             {
-                string serverName = Statics.GetUserInput("Server Name: ", ConsoleColor.Gray, ConsoleColor.Green);
-                svr.Host = Statics.GetUserInput("Enter Host: ", ConsoleColor.Gray, ConsoleColor.Green);
-                svr.Port = Convert.ToInt32(Statics.GetUserInput("Enter Port: ", ConsoleColor.Gray, ConsoleColor.Green));
-                svr.UserName = Statics.GetUserInput("Enter UserName: ", ConsoleColor.Gray, ConsoleColor.Green);
-                svr.Secret = sec.EnryptString(Statics.GetUserInput("Enter Secret: ", ConsoleColor.Gray, ConsoleColor.Green));
+                //call method to prompt user for input
+                svr = PromptSmtpServer();
 
-                Statics.Servers.Add(serverName, svr);
+                Statics.Servers.Add(svr.ServerName, svr);
                 Statics.PersistSMTPServer();
                 Statics.Display($"Server Added: ", false, ConsoleColor.Gray);
                 Statics.Display($"{svr.Host}", true, ConsoleColor.Green);
                 Statics.Display($"New SMTP Server Count: ", false, ConsoleColor.Gray);
                 Statics.Display($"{Statics.Servers.Count}", true, ConsoleColor.Green);
+                System.Console.WriteLine("");
                 Statics.PressAnyKey();
             }
             catch
             {
                 Statics.Display("Invalid input", true, ConsoleColor.Red);
+                System.Console.WriteLine("");
+                Statics.PressAnyKey();
+            }
+        }
+
+
+        private void EditServer()
+        {
+
+            Console.Clear();
+            Statics.Display("Edit Smtp Server", true, ConsoleColor.Gray);
+            Statics.Display(new string('-', 40), true, ConsoleColor.Gray);
+
+            var serverName = Statics.GetUserInput("Enter Server Name to Edit: ", ConsoleColor.Gray, ConsoleColor.Green);
+
+            if (Statics.Servers.ContainsKey(serverName))
+            {
+                AmaraCode.Security sec = new Security();
+                SmtpServer svr = Statics.Servers[serverName];
+
+                //prompt user for entries.
+                var svrEdit = PromptSmtpServer(Statics.Servers[serverName]);
+
+                if (svrEdit.Equals(svr))
+                {
+                    System.Console.WriteLine("No Changes Were Made");
+                }
+                else
+                {
+                    //remove the existing entry
+                    Statics.Servers.Remove(serverName);
+
+                    //Add new SmtpServer
+                    Statics.Servers.Add(svrEdit.ServerName, svrEdit);
+
+                    Statics.PersistSMTPServer();
+                    Statics.Display($"Server Modified: ", false, ConsoleColor.Gray);
+                    Statics.Display($"{svr.Host}", true, ConsoleColor.Green);
+                    //Statics.Display($"New SMTP Server Count: ", false, ConsoleColor.Gray);
+                    //Statics.Display($"{Statics.Servers.Count}", true, ConsoleColor.Green);
+                }
+
+                Statics.PressAnyKey();
+
+            }
+            else
+            {
+                Statics.Display("Cannot find that Server name.", true, ConsoleColor.Red);
+                System.Console.WriteLine("");
                 Statics.PressAnyKey();
             }
 
+
         }
+
+
+
+        /// <summary>
+        /// This method should handle all the prompts to get SMTPServer info from the users.
+        /// If a SmtpServer object is passed in then use that to populate for Edit.
+        /// </summary>
+        /// <param name="server"></param>
+        /// <returns></returns>
+        private SmtpServer PromptSmtpServer(SmtpServer server = null)
+        {
+            //keep varible stating if an object  was passed in.
+            bool hasServer = server == null ? false : true;
+            AmaraCode.Security sec = new Security();
+            var newServer = SmtpServer.CreateNew();
+
+            if (hasServer == false)
+            {
+                //this is genearlly used for an ADD method
+
+                //create a new instance since not passed in.
+                //server = SmtpServer.CreateNew();
+                newServer.ServerName = Statics.GetUserInput("Server Name: ", ConsoleColor.Gray, ConsoleColor.Green);
+                newServer.Host = Statics.GetUserInput("Enter Host: ", ConsoleColor.Gray, ConsoleColor.Green);
+                newServer.Port = Statics.GetUserInput<int>("Enter Port: ", ConsoleColor.Gray, ConsoleColor.Green);
+                newServer.UserName = Statics.GetUserInput("Enter UserName: ", ConsoleColor.Gray, ConsoleColor.Green);
+                newServer.Secret = sec.EnryptString(Statics.GetUserInput("Enter Secret: ", ConsoleColor.Gray, ConsoleColor.Green));
+
+            }
+            else
+            {
+
+                if (Statics.GetUserSingleInput("Edit ServerName (y/n) ", ConsoleColor.Gray, ConsoleColor.Green) == 'y')
+                {
+                    newServer.ServerName = Statics.GetUserInput($"Server Name [{server.ServerName}]: ", ConsoleColor.Gray, ConsoleColor.Green);
+                }
+                else
+                {
+                    newServer.ServerName = server.ServerName;
+                }
+
+                if (Statics.GetUserSingleInput("Edit Host (y/n) ", ConsoleColor.Gray, ConsoleColor.Green) == 'y')
+                {
+                    newServer.Host = Statics.GetUserInput($"Enter Host [{server.Host}]: ", ConsoleColor.Gray, ConsoleColor.Green);
+                }
+                else
+                {
+                    newServer.Host = server.Host;
+                }
+
+                if (Statics.GetUserSingleInput("Edit Port (y/n) ", ConsoleColor.Gray, ConsoleColor.Green) == 'y')
+                {
+                    newServer.Port = Statics.GetUserInput<int>($"Enter Port [{server.Port.ToString()}]: ", ConsoleColor.Gray, ConsoleColor.Green);
+                }
+                else
+                {
+                    newServer.Port = server.Port;
+                }
+
+                if (Statics.GetUserSingleInput("Edit UserName (y/n) ", ConsoleColor.Gray, ConsoleColor.Green) == 'y')
+                {
+                    newServer.UserName = Statics.GetUserInput($"Enter UserName [{server.UserName}]: ", ConsoleColor.Gray, ConsoleColor.Green);
+                }
+                else
+                {
+                    newServer.UserName = server.UserName;
+                }
+
+                if (Statics.GetUserSingleInput("Edit Secret (y/n) ", ConsoleColor.Gray, ConsoleColor.Green) == 'y')
+                {
+                    newServer.Secret = sec.EnryptString(Statics.GetUserInput($"Enter Secret [{sec.DecryptString(server.Secret)}]: ", ConsoleColor.Gray, ConsoleColor.Green));
+                }
+                else
+                {
+                    newServer.Secret = server.Secret;
+                }
+            }
+
+            return newServer;
+
+        }
+
+
 
 
         /// <summary>
@@ -125,6 +250,7 @@ namespace EmailLoop.Menus
                 Statics.Display($"{result}", true, ConsoleColor.Green);
                 Statics.Display($"New SMTP Server Count: ", false, ConsoleColor.Gray);
                 Statics.Display($"{Statics.Servers.Count}", true, ConsoleColor.Green);
+                System.Console.WriteLine("");
                 Statics.PressAnyKey();
             }
         }
@@ -134,30 +260,19 @@ namespace EmailLoop.Menus
         /// </summary>
         public void ListServers()
         {
-            Console.WriteLine("");
+            Console.Clear();
             var sec = new Security();
 
-
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("{0,-30} {1,-30} {2, -10} {3, -30} {4, -30}", "Server", "Host", "Port", "User Name", "Secret");
+            Console.WriteLine(new string('-', Console.WindowWidth));
+            Console.ForegroundColor = ConsoleColor.Yellow;
             foreach (KeyValuePair<string, SmtpServer> item in Statics.Servers)
             {
-
-                Statics.Display("Server: ", false, ConsoleColor.Gray);
-                Statics.Display(item.Key, true, ConsoleColor.Green);
-
-                Statics.Display("Host: ", false, ConsoleColor.Gray);
-                Statics.Display(item.Value.Host, true, ConsoleColor.Green);
-
-                Statics.Display("Port: ", false, ConsoleColor.Gray);
-                Statics.Display(item.Value.Port.ToString(), true, ConsoleColor.Green);
-
-                Statics.Display("UserName: ", false, ConsoleColor.Gray);
-                Statics.Display(item.Value.UserName, true, ConsoleColor.Green);
-
-                Statics.Display("Secret: ", false, ConsoleColor.Gray);
-                Statics.Display(sec.DecryptString(item.Value.Secret), true, ConsoleColor.Green);
-
-                Statics.Display("************************************", true, ConsoleColor.White);
+                Console.WriteLine("{0,-30} {1,-30} {2, -10} {3, -30} {4, -30}", item.Key, item.Value.Host,
+                item.Value.Port.ToString(), item.Value.UserName, sec.DecryptString(item.Value.Secret));
             }
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("");
             Statics.PressAnyKey();
@@ -179,7 +294,7 @@ namespace EmailLoop.Menus
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("SMTPServer Menu");
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("********************************");
+            Console.WriteLine(new string('-', 60));
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("List - ");
@@ -213,7 +328,7 @@ namespace EmailLoop.Menus
 
 
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("********************************");
+            Console.WriteLine(new string('-', 60));
         }
     }
 

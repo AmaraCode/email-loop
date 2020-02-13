@@ -18,26 +18,21 @@ namespace EmailLoop.Menus
             return new MainMenu();
         }
 
+
+
         /// <summary>
         /// 
         /// </summary>
         public void Invoke()
         {
             bool exit = false;
-            bool firstRun = true;
+            //bool firstRun = true;
+            bool padMenu = false;
 
             while (!exit)
             {
-                if (firstRun)
-                {
-                    ShowMenu(false);
-                    firstRun = false;
-                }
-                else
-                {
-                    ShowMenu();
-                }
-
+                ShowMenu(padMenu);  //temporary
+                padMenu = true;
 
                 var result = Statics.GetUserInput("Enter Command: ", ConsoleColor.Blue, ConsoleColor.Green);
                 switch (result.ToLower())
@@ -45,7 +40,8 @@ namespace EmailLoop.Menus
 
                     case "":
                         Console.Clear();
-                        ShowMenu();
+                        padMenu = false;
+                        //ShowMenu();
                         break;
 
                     case "send":
@@ -112,7 +108,9 @@ namespace EmailLoop.Menus
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Main Menu");
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("********************************");
+            Console.WriteLine(new string('-', 60));
+
+
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Send - ");
@@ -150,7 +148,7 @@ namespace EmailLoop.Menus
             Console.Write("Exit Application \n");
 
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine("********************************");
+            Console.WriteLine(new string('-', 60));
         }
 
 
@@ -160,10 +158,13 @@ namespace EmailLoop.Menus
         /// </summary>
         public void ListEmails()
         {
-            Console.WriteLine("");
+            Console.Clear();
+            Statics.Display("Email Addresses", true, ConsoleColor.White);
+            Console.WriteLine(new string('-', Console.WindowWidth));
+
             foreach (string email in Statics.Emails)
             {
-                Statics.Display(email, true, ConsoleColor.White);
+                Statics.Display(email, true, ConsoleColor.Yellow);
             }
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("");

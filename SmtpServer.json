@@ -1,1 +1,1 @@
-{"Server1":{"Host":"smtp.somewhere.com","Port":465,"UserName":"myemail@somewhere.com","Secret":"c2VjcmV0"}}
+{"Server1":{"ServerName":null,"Host":"smtp.somewhere.com","Port":465,"UserName":"myemail@somewhere.com","Secret":"c2VjcmV0"},"MyServer":{"ServerName":null,"Host":"smtp.myserver.net","Port":465,"UserName":"CaptainCrunch@myserver.ent","Secret":"VGhpc2lzYTk5U2VjcmV0IQ=="},"test":{"ServerName":"test","Host":"smtp.test.net","Port":555,"UserName":"myusername","Secret":"bXluZXdzZWNyZXQ="}}
