@@ -138,6 +138,7 @@ namespace EmailLoop.Menus
                     //Statics.Display($"{Statics.Servers.Count}", true, ConsoleColor.Green);
                 }
 
+
                 Statics.PressAnyKey();
 
             }
