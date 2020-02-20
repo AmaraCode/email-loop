@@ -49,7 +49,7 @@ namespace EmailLoop
 
             client.ServerCertificateValidationCallback = (s, c, h, e) => true;
             client.Connect(server.Host, server.Port, SecureSocketOptions.Auto);
-            client.Authenticate(server.UserName, sec.DecryptString(server.Secret));
+            client.Authenticate(server.UserName, sec.Decrypt(server.Secret, Statics.EncryptionKey));
             client.Send(mimeMessage);
             client.Disconnect(true);
         }

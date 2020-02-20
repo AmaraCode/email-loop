@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using AmaraCode;
 
 
 
@@ -17,6 +16,7 @@ namespace EmailLoop
         public static bool Cancelled { get; set; } = false;
         public static List<string> Emails { get; set; }
         public static Dictionary<string, SmtpServer> Servers { get; set; }
+        public static string EncryptionKey { get; set; }
 #pragma warning restore 1591
 
 
@@ -126,7 +126,7 @@ namespace EmailLoop
         private static void LoadData()
         {
             string path = AppDomain.CurrentDomain.BaseDirectory;
-            var io = new FileIO();
+            var io = new AmaraCode.FileIO();
 
             Statics.Emails = io.GetCollection<List<string>>(path + "emails.json");
             Statics.Servers = io.GetCollection<Dictionary<string, SmtpServer>>(path + "servers.json");

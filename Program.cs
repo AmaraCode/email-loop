@@ -1,7 +1,7 @@
 ﻿using System;
 //using System.CommandLine.DragonFruit;
 using EmailLoop.Menus;
-using AmaraCode;
+
 using System.Collections.Generic;
 
 namespace EmailLoop
@@ -21,6 +21,7 @@ namespace EmailLoop
             {
 
                 Console.Clear();
+                Statics.EncryptionKey = "mykey";  //remember to change this
                 var main = MainMenu.CreateNew();
                 main.Invoke();
 

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using AmaraCode;
+
 
 namespace EmailLoop.Menus
 {
@@ -78,7 +78,7 @@ namespace EmailLoop.Menus
         public void AddServer()
         {
             var svr = SmtpServer.CreateNew();
-            AmaraCode.Security sec = new Security();
+            AmaraCode.Security sec = new AmaraCode.Security();
             try
             {
                 //call method to prompt user for input
@@ -115,7 +115,7 @@ namespace EmailLoop.Menus
 
             if (Statics.Servers.ContainsKey(serverName))
             {
-                AmaraCode.Security sec = new Security();
+                AmaraCode.Security sec = new AmaraCode.Security();
                 SmtpServer svr = Statics.Servers[serverName];
 
                 //prompt user for entries.
@@ -166,7 +166,7 @@ namespace EmailLoop.Menus
         {
             //keep varible stating if an object  was passed in.
             bool hasServer = server == null ? false : true;
-            AmaraCode.Security sec = new Security();
+            AmaraCode.Security sec = new AmaraCode.Security();
             var newServer = SmtpServer.CreateNew();
 
             if (hasServer == false)
@@ -179,7 +179,7 @@ namespace EmailLoop.Menus
                 newServer.Host = Statics.GetUserInput("Enter Host: ", ConsoleColor.Gray, ConsoleColor.Green);
                 newServer.Port = Statics.GetUserInput<int>("Enter Port: ", ConsoleColor.Gray, ConsoleColor.Green);
                 newServer.UserName = Statics.GetUserInput("Enter UserName: ", ConsoleColor.Gray, ConsoleColor.Green);
-                newServer.Secret = sec.EnryptString(Statics.GetUserInput("Enter Secret: ", ConsoleColor.Gray, ConsoleColor.Green));
+                newServer.Secret = sec.Encrypt(Statics.GetUserInput("Enter Secret: ", ConsoleColor.Gray, ConsoleColor.Green), Statics.EncryptionKey);
 
             }
             else
@@ -223,7 +223,7 @@ namespace EmailLoop.Menus
 
                 if (Statics.GetUserSingleInput("Edit Secret (y/n) ", ConsoleColor.Gray, ConsoleColor.Green) == 'y')
                 {
-                    newServer.Secret = sec.EnryptString(Statics.GetUserInput($"Enter Secret [{sec.DecryptString(server.Secret)}]: ", ConsoleColor.Gray, ConsoleColor.Green));
+                    newServer.Secret = sec.Encrypt(Statics.GetUserInput($"Enter Secret [{sec.Decrypt(server.Secret, Statics.EncryptionKey)}]: ", ConsoleColor.Gray, ConsoleColor.Green), Statics.EncryptionKey);
                 }
                 else
                 {
@@ -277,7 +277,7 @@ namespace EmailLoop.Menus
         {
 
             Console.Clear();
-            var sec = new Security();
+            var sec = new AmaraCode.Security();
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("{0,-30} {1,-30} {2, -10} {3, -30} {4, -30}", "Server", "Host", "Port", "User Name", "Secret");
@@ -286,7 +286,7 @@ namespace EmailLoop.Menus
             foreach (KeyValuePair<string, SmtpServer> item in Statics.Servers)
             {
                 Console.WriteLine("{0,-30} {1,-30} {2, -10} {3, -30} {4, -30}", item.Key, item.Value.Host,
-                item.Value.Port.ToString(), item.Value.UserName, sec.DecryptString(item.Value.Secret));
+                item.Value.Port.ToString(), item.Value.UserName, sec.Decrypt(item.Value.Secret, Statics.EncryptionKey));
             }
             Console.ForegroundColor = ConsoleColor.White;
 
