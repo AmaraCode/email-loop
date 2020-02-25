@@ -142,7 +142,7 @@ namespace EmailLoop
             var path = Environment.CurrentDirectory;
             var fileio = new AmaraCode.FileIO();
             string file = path + "\\emails.json";
-            System.Console.WriteLine(file);
+            //System.Console.WriteLine(file);
             //persist the email list
             fileio.SaveCollection<List<string>>(Statics.Emails, file);
         }
